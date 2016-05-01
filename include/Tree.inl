@@ -141,3 +141,82 @@ void Tree<T>::print()
 {
     print( root );
 }
+
+/*!
+ * nthElement function
+ * Returns the nth element (counting from 1) through ABB ordered path
+ *
+ * @return => template
+*/
+template <typename T>
+T Tree<T>::nthElement( int n_ ) const
+{
+    /*! empty */
+    return nullptr;
+}
+
+/*!
+ * median function
+ * Returns the element cointained in the Tree's median.
+ * If the Tree is even, returns the lowest median element.
+ *
+ * @return => template
+*/
+template <typename T>
+T Tree<T>::median() const
+{
+    /*! empty */
+    return nullptr;
+}
+
+/*!
+ * position function
+ * Returns the provided element position in a Tree's simetric ordered path.
+ *
+ * @return => int
+*/
+template <typename T>
+int Tree<T>::position( TreeNode* ) const
+{
+    /*! empty */
+    return 0;
+}
+
+/*!
+ * isFull function
+ * Returns true if the Tree is a Full Binary and false otherwise.
+ *
+ * @return => bool
+*/
+template <typename T>
+bool Tree<T>::isFull() const
+{
+    /*! empty */
+    return false;
+}
+
+/*!
+ * isComplete function
+ * Returns true if the Tree is a Complete Binary and false otherwise.
+ *
+ * @return => bool
+*/
+template <typename T>
+bool Tree<T>::isComplete() const
+{
+    /*! empty */
+    return false;
+}
+
+/*!
+ * toString function
+ * Returns a string containing the Tree's view sequence by level.
+ *
+ * @return => string
+*/
+template <typename T>
+string Tree<T>::toString() const
+{
+    /*! empty */
+    return "";
+}

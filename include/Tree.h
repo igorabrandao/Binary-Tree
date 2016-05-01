@@ -19,7 +19,10 @@
 #define Tree_H_
 
 #include <iostream>
+#include <string>
 #include <stdexcept>
+
+using namespace std;
 
 // ******************PUBLIC OPERATIONS*********************
 // void push( x )       --> Insert x
@@ -64,6 +67,14 @@ class Tree
 
         void insert( T );
         void print();
+
+        /*! Custom functions */
+        T nthElement( int ) const;
+        T median() const;
+        int position( TreeNode* ) const;
+        bool isFull() const;
+        bool isComplete() const;
+        string toString() const;
 };
 
 #include "Tree.inl"
