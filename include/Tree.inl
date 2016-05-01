@@ -15,7 +15,8 @@
 template <typename T>
 Tree<T>::Tree():root( nullptr )
 {
-	/*! empty */
+	//! Initialize some attributes
+    this->index = 0;
 }
 
 /*!
@@ -112,21 +113,21 @@ void Tree<T>::insert( T val )
  * print function
  * Print the Tree structure recursively
  *
- * @param root => Tree's root
+ * @param *node => Tree's node pointer
  *
  * @return => void
 */
 template <typename T>
-void Tree<T>::print( TreeNode *root ) const
+void Tree<T>::print( TreeNode *node ) const
 {
 	//! Check if the Tree was initialized
-    if ( root == nullptr )
+    if ( node == nullptr )
         return ;
 
     // Recursively callings (first left and then right)
-    print(root->left);
-    std::cout << root->data << std::endl;
-    print(root->right);
+    print(node->left);
+    std::cout << node->data << std::endl;
+    print(node->right);
 }
 
 /*!
@@ -143,16 +144,57 @@ void Tree<T>::print()
 }
 
 /*!
+ * countNodes function
+ * Count the total Nodes inside the Tree
+ *
+ * @param *node => Tree's node pointer
+ *
+ * @return => int
+*/
+template <typename T>
+int Tree<T>::countNodes( TreeNode *node ) const
+{
+    //! Check if the Tree was initialized
+    if ( node == nullptr )
+        return 0;
+
+    //! Return the total Nodes recursively
+    return ( countNodes(node->left) + countNodes(node->right) + 1 );
+}
+
+/*!
  * nthElement function
  * Returns the nth element (counting from 1) through ABB ordered path
+ *
+ * Using a total count field to each node, it's more efficient to find
+ * the nth element (in logarithmic time).
+ *
+ * @param *node => Tree's node pointer
+ * @param n_    => element's searched position
  *
  * @return => template
 */
 template <typename T>
-T Tree<T>::nthElement( int n_ ) const
+T Tree<T>::nthElement( TreeNode *node, int n_ ) const
 {
-    /*! empty */
-    return nullptr;
+    //! Check if the parameter n is inside the Tree scope
+    assert( n_ >= 0 && n_ < node->nodeCount );
+
+    if ( node->left != nullptr )
+    {
+        if ( n_ < node->left->nodeCount )
+        {
+            return node->left->nthElement( n_ );
+        }
+
+        n_ -= node->left->total;
+    }
+
+    if ( n_ == 0 )
+        return this;
+
+    assert( node->right != nullptr );
+    return node->right->nthElement(n_ - 1);
 }
 
 /*!
@@ -160,13 +202,33 @@ T Tree<T>::nthElement( int n_ ) const
  * Returns the element cointained in the Tree's median.
  * If the Tree is even, returns the lowest median element.
  *
+ * @param *node => Tree's node pointer
+ *
  * @return => template
 */
 template <typename T>
-T Tree<T>::median() const
+T Tree<T>::findMedian( TreeNode *node ) const
 {
-    /*! empty */
-    return nullptr;
+    //! Check if the Tree was initialized
+    if ( node == nullptr )
+        return nullptr;
+
+    //! Recursive call with the left child
+    median = findMedian( node->left );
+
+    //! Return the median element if it was found
+    if ( median != nullptr )
+        return median;
+
+    //! Check if the tested element is the median
+    if ( this->index == (this.totalNode / 2) )
+        return node;
+
+    //! Increase the global index
+    this->index += 1;
+
+    //! Recursive call with the right child
+    return findMedian( node->right );
 }
 
 /*!
