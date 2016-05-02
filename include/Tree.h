@@ -12,6 +12,7 @@
     OBS.........: Part of the EDB2 Project.
 
     LAST UPDATE.: April 30th, 2016.
+    LAST UPDATE.: May 1st, 2016.
     </PRE>
 */
 
@@ -64,6 +65,7 @@ class Tree
     int index;          //!< Index to support the median function
     int totalNode;      //!< Total of Nodes (including the root)
     TreeNode * root;    //!< Tree root instance
+
     void print( TreeNode* ) const;
     void freeMemory( TreeNode* );
 
@@ -90,7 +92,7 @@ class Tree
 };
 
 #include "Tree.inl"
-#endif
+#endif // TREE_H
 
 /* --------------------- [ End of the Tree.h header ] ------------------- */
 /* ========================================================================= */

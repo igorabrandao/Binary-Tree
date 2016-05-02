@@ -4,6 +4,8 @@
  *  Implements the functions from Tree class.
 */
 
+#include <queue>
+#include <utility>  //! std::pair
 #include "Tree.h"
 
 /*!
@@ -124,10 +126,32 @@ void Tree<T>::print( TreeNode *node ) const
     if ( node == nullptr )
         return ;
 
-    // Recursively callings (first left and then right)
-    print(node->left);
-    std::cout << node->data << std::endl;
-    print(node->right);
+    int level = 0;
+
+    // Use a queue for breadth-first traversal of the tree.  The pair is
+    // to keep track of the depth of each node.  (Depth of root node is 1.)
+    typedef std::pair<TreeNode*, int> node_level;
+
+    std::queue<node_level> q;
+    q.push(node_level(node, 1));
+
+    while (!q.empty()) 
+    {
+        node_level nl = q.front();
+        q.pop();
+        if ( nullptr != (node = nl.first) )
+        {
+            if (level != nl.second)
+            {
+                std::cout << std::endl << std::endl << " Level " << nl.second << ": ";
+                level = nl.second;
+            }
+            std::cout << node->data << ' ';
+            q.push(node_level(node->left,  1 + level));
+            q.push(node_level(node->right, 1 + level));
+        }
+    }
+    std::cout << std::endl << std::endl;
 }
 
 /*!
@@ -235,10 +259,12 @@ T Tree<T>::findMedian( TreeNode *node ) const
  * position function
  * Returns the provided element position in a Tree's simetric ordered path.
  *
+ * @param *node => Tree's node pointer
+ *
  * @return => int
 */
 template <typename T>
-int Tree<T>::position( TreeNode* ) const
+int Tree<T>::position( TreeNode *node ) const
 {
     /*! empty */
     return 0;
