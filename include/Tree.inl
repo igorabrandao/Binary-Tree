@@ -19,6 +19,7 @@ Tree<T>::Tree():root( nullptr )
 {
 	//! Initialize some attributes
     this->index = 0;
+    this->nodeCount = 1;
 }
 
 /*!
@@ -105,10 +106,19 @@ void Tree<T>::insert( T val )
     	 *  than it's parent.
     	*/
         if ( prev->data < treeNode->data )
+        {
             prev->right = treeNode;  	//!< Greater (right)
+            prev->rightCount += 1;      //!< Sum up the right counter
+        }
         else
+        {
             prev->left = treeNode;		//!< Lower (left)
+            prev->leftCount += 1;      //!< Sum up the left counter
+        }
     }
+
+    //! Update the node counter
+    this->nodeCount = countNodes( this->root );
 }
 
 /*!
@@ -128,27 +138,29 @@ void Tree<T>::print( TreeNode *node ) const
 
     int level = 0;
 
-    // Use a queue for breadth-first traversal of the tree.  The pair is
-    // to keep track of the depth of each node.  (Depth of root node is 1.)
+    /*! Use a queue for breadth-first traversal of the tree. The pair is
+    to keep track of the depth of each node. (Depth of root node is 1.) */
     typedef std::pair<TreeNode*, int> node_level;
 
     std::queue<node_level> q;
     q.push(node_level(node, 1));
 
-    while (!q.empty()) 
+    while ( !q.empty() )
     {
         node_level nl = q.front();
         q.pop();
+
         if ( nullptr != (node = nl.first) )
         {
-            if (level != nl.second)
+            if ( level != nl.second )
             {
-                std::cout << std::endl << std::endl << " Level " << nl.second << ": ";
+                std::cout << std::endl << std::endl << " Nível " << nl.second << ": ";
                 level = nl.second;
             }
+
             std::cout << node->data << ' ';
-            q.push(node_level(node->left,  1 + level));
-            q.push(node_level(node->right, 1 + level));
+            q.push( node_level(node->left,  1 + level) );
+            q.push( node_level(node->right, 1 + level) );
         }
     }
     std::cout << std::endl << std::endl;
@@ -176,7 +188,7 @@ void Tree<T>::print()
  * @return => int
 */
 template <typename T>
-int Tree<T>::countNodes( TreeNode *node ) const
+int Tree<T>::countNodes( TreeNode *node )
 {
     //! Check if the Tree was initialized
     if ( node == nullptr )
@@ -193,32 +205,27 @@ int Tree<T>::countNodes( TreeNode *node ) const
  * Using a total count field to each node, it's more efficient to find
  * the nth element (in logarithmic time).
  *
- * @param *node => Tree's node pointer
  * @param n_    => element's searched position
  *
  * @return => template
 */
 template <typename T>
-T Tree<T>::nthElement( TreeNode *node, int n_ ) const
+const typename Tree<T>::TreeNode* Tree<T>::nthElement( typename Tree<T>::TreeNode *node, int n_ )
 {
-    //! Check if the parameter n is inside the Tree scope
-    assert( n_ >= 0 && n_ < node->nodeCount );
+    assert( n_ >= 0 && n_ < this->nodeCount );
 
     if ( node->left != nullptr )
     {
-        if ( n_ < node->left->nodeCount )
-        {
-            return node->left->nthElement( n_ );
-        }
-
-        n_ -= node->left->total;
+        if ( n_ < node->leftCount )
+            return nthElement(node->left, n_);
+        n_ -= node->leftCount;
     }
 
     if ( n_ == 0 )
-        return this;
+        return node;
 
     assert( node->right != nullptr );
-    return node->right->nthElement(n_ - 1);
+    return nthElement(node->right, (n_ - 1));
 }
 
 /*!
@@ -231,22 +238,22 @@ T Tree<T>::nthElement( TreeNode *node, int n_ ) const
  * @return => template
 */
 template <typename T>
-T Tree<T>::findMedian( TreeNode *node ) const
+T Tree<T>::findMedian( TreeNode *node )
 {
     //! Check if the Tree was initialized
     if ( node == nullptr )
-        return nullptr;
+        return 0;
 
     //! Recursive call with the left child
-    median = findMedian( node->left );
+    T median = findMedian( node->left );
 
     //! Return the median element if it was found
-    if ( median != nullptr )
+    if ( median != 0 )
         return median;
 
     //! Check if the tested element is the median
-    if ( this->index == (this.totalNode / 2) )
-        return node;
+    if ( this->index == (this->nodeCount / 2) )
+        return node->data;
 
     //! Increase the global index
     this->index += 1;
@@ -264,7 +271,7 @@ T Tree<T>::findMedian( TreeNode *node ) const
  * @return => int
 */
 template <typename T>
-int Tree<T>::position( TreeNode *node ) const
+int Tree<T>::position( TreeNode *node )
 {
     /*! empty */
     return 0;
@@ -277,7 +284,7 @@ int Tree<T>::position( TreeNode *node ) const
  * @return => bool
 */
 template <typename T>
-bool Tree<T>::isFull() const
+bool Tree<T>::isFull()
 {
     /*! empty */
     return false;
@@ -290,7 +297,7 @@ bool Tree<T>::isFull() const
  * @return => bool
 */
 template <typename T>
-bool Tree<T>::isComplete() const
+bool Tree<T>::isComplete()
 {
     /*! empty */
     return false;
@@ -303,7 +310,7 @@ bool Tree<T>::isComplete() const
  * @return => string
 */
 template <typename T>
-string Tree<T>::toString() const
+string Tree<T>::toString()
 {
     /*! empty */
     return "";

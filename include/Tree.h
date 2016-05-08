@@ -13,6 +13,7 @@
 
     LAST UPDATE.: April 30th, 2016.
     LAST UPDATE.: May 1st, 2016.
+    LAST UPDATE.: May 4th, 2016.
     </PRE>
 */
 
@@ -22,19 +23,20 @@
 #include <iostream>
 #include <string>
 #include <stdexcept>
+#include <cassert>
 
 using namespace std;
 
 // ******************PUBLIC OPERATIONS*********************
-// void insert( T )                 --> Insert a Node T
-// void print()                     --> Print the entire tree
-// int countNodes( TreeNode* )      --> Count the Nodes in the tree
-// T nthElement( TreeNode*, int )   --> Return the nth element
-// T findMedian( TreeNode* )        --> Return the element in the median
-// int position( TreeNode* )        --> Return a Node's position
-// bool isFull()                    --> Check if the Tree is full
-// bool isComplete()                --> Check if the Tree is Complete
-// string toString()                --> Return the Tree as string
+// void insert( T )                         --> Insert a Node T
+// void print()                             --> Print the entire tree
+// int countNodes( TreeNode* )              --> Count the Nodes in the tree
+// TreeNode* nthElement( TreeNode*, int )   --> Return the nth element
+// T findMedian( TreeNode* )                --> Return the element in the median
+// int position( TreeNode* )                --> Return a Node's position
+// bool isFull()                            --> Check if the Tree is full
+// bool isComplete()                        --> Check if the Tree is Complete
+// string toString()                        --> Return the Tree as string
 
 // ***********************ERRORS****************************
 // std::bad_alloc thrown if needed.
@@ -50,21 +52,19 @@ class Tree
 
         int leftCount;      //!< Node's left child count
         int rightCount;     //!< Node's right child count
-        int nodeCount;      //!< Node's total child count
 
         TreeNode * left;    //!< Node's left child
         TreeNode * right;   //!< Node's right child
 
-        TreeNode(T val):data(val),left(NULL),right(NULL)
+        TreeNode(T val):data(val),left(NULL),right(NULL),leftCount(0),rightCount(0)
         {
             /*! empty */
         }
     };
 
-    T median;           //!< Object to receive the median
     int index;          //!< Index to support the median function
-    int totalNode;      //!< Total of Nodes (including the root)
-    TreeNode * root;    //!< Tree root instance
+    int treeHeight;     //!< Tree's height
+    int nodeCount;      //!< Node's total child count
 
     void print( TreeNode* ) const;
     void freeMemory( TreeNode* );
@@ -75,20 +75,32 @@ class Tree
     public:
 
         /*! Basic members */
-        Tree();     //!< Constructor
-        ~Tree();    //!< Destructor
+        TreeNode * root;    //!< Tree root instance
+        Tree();             //!< Constructor
+        ~Tree();            //!< Destructor
 
         void insert( T );
         void print();
 
         /*! Custom functions */
-        int countNodes( TreeNode* ) const;
-        T nthElement( TreeNode*, int ) const;
-        T findMedian( TreeNode* ) const;
-        int position( TreeNode* ) const;
-        bool isFull() const;
-        bool isComplete() const;
-        string toString() const;
+        int countNodes( TreeNode* );
+
+        const TreeNode* nthElement( TreeNode*, int );
+        T findMedian( TreeNode* );
+        int position( TreeNode* );
+        bool isFull();
+        bool isComplete();
+        string toString();
+
+        /*! Get's and set's */
+        void setIndex( int index_ ) { this->index = index_; }
+        int getIndex() { return this->index; }
+
+        void setHeight( int height_ ) { this->treeHeight = height_; }
+        int getHeight() { return this->treeHeight; }
+
+        void setNodeCount( int count_ ) { this->nodeCount = count_; }
+        int getNodeCount() { return this->nodeCount; }
 };
 
 #include "Tree.inl"
