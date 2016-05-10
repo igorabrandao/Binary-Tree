@@ -69,35 +69,46 @@ template <typename T>
 void Tree<T>::insert( T val )
 {
 	//! Create an instance of the new Node
-    TreeNode *treeNode = new TreeNode(val);
+    TreeNode *node = new TreeNode(val);
 
     //! Auxiliaries pointer to help connecting the new Node
-    TreeNode *temp = nullptr;
-    TreeNode *prev = nullptr;
+    TreeNode *parentNode = nullptr;
+    TreeNode *childNode = nullptr;
 
-    //! From now, the temp Node represents the root
-    temp = root;
+    //! From now, the parentNode Node represents the root
+    parentNode = root;
 
-    //! While the temp Node is a valid one, keep running
-    while( temp )
+    //! While the parentNode Node is a valid one, keep running
+    while ( parentNode )
     {
-    	//! Prev receives the parent Node
-        prev = temp;
+    	//! childNode receives the parent Node
+        childNode = parentNode;
 
         //! Check where the new Node would suit
-        if ( temp->data < treeNode->data )
-            temp = temp->right;
+        if ( parentNode->data < node->data )
+        {
+            parentNode = parentNode->right;
+            childNode->rightCount += 1;      //!< Sum up the right counter
+        }
+        else if ( parentNode->data > node->data )
+        {
+            parentNode = parentNode->left;
+            childNode->leftCount += 1;      //!< Sum up the left counter
+        }
         else
-            temp = temp->left;
+        {
+            //! Ignore duplicated elements
+            return;
+        }
     }
 
     //! It's time to reconnect the pointers
-    if ( prev == nullptr )
+    if ( childNode == nullptr )
     {
     	/*! If it happens, means that the new Node is smaller than the root,
     	 * or that the Tree may not be initialized
     	*/
-        root = treeNode;
+        root = node;
     }
     else
     {
@@ -105,16 +116,10 @@ void Tree<T>::insert( T val )
     	 *  Now, we just need to check if the new Node is lower or greater
     	 *  than it's parent.
     	*/
-        if ( prev->data < treeNode->data )
-        {
-            prev->right = treeNode;  	//!< Greater (right)
-            prev->rightCount += 1;      //!< Sum up the right counter
-        }
+        if ( childNode->data < node->data )
+            childNode->right = node;  	//!< Greater (right)
         else
-        {
-            prev->left = treeNode;		//!< Lower (left)
-            prev->leftCount += 1;      //!< Sum up the left counter
-        }
+            childNode->left = node;		//!< Lower (left)
     }
 
     //! Update the node counter
@@ -180,6 +185,28 @@ void Tree<T>::print()
 }
 
 /*!
+ * treeHeight function
+ * Count the total tree's levels
+ *
+ * @param *node => Pointer to Tree's node root
+ *
+ * @return => int
+*/
+template <typename T>
+int Tree<T>::treeHeight( TreeNode *node_ )
+{
+    //! Check if the Tree was initialized
+    if ( node_ == nullptr )
+        return 0;
+
+    //! Return the total Nodes recursively
+    if ( node_->leftCount > node_->rightCount )
+        return ( treeHeight(node_->left) + 1 );
+    else
+        return ( treeHeight(node_->right) + 1 );
+}
+
+/*!
  * countNodes function
  * Count the total Nodes inside the Tree
  *
@@ -188,14 +215,14 @@ void Tree<T>::print()
  * @return => int
 */
 template <typename T>
-int Tree<T>::countNodes( TreeNode *node )
+int Tree<T>::countNodes( TreeNode *node_ )
 {
     //! Check if the Tree was initialized
-    if ( node == nullptr )
+    if ( node_ == nullptr )
         return 0;
 
     //! Return the total Nodes recursively
-    return ( countNodes(node->left) + countNodes(node->right) + 1 );
+    return ( countNodes(node_->left) + countNodes(node_->right) + 1 );
 }
 
 /*!
@@ -210,22 +237,19 @@ int Tree<T>::countNodes( TreeNode *node )
  * @return => template
 */
 template <typename T>
-const typename Tree<T>::TreeNode* Tree<T>::nthElement( typename Tree<T>::TreeNode *node, int n_ )
+T Tree<T>::nthElement( typename Tree<T>::TreeNode *node, int n_ )
 {
     assert( n_ >= 0 && n_ < this->nodeCount );
 
-    if ( node->left != nullptr )
-    {
-        if ( n_ < node->leftCount )
-            return nthElement(node->left, n_);
-        n_ -= node->leftCount;
-    }
+    if ( node == nullptr )
+        return NULL;
 
     if ( n_ == 0 )
-        return node;
-
-    assert( node->right != nullptr );
-    return nthElement(node->right, (n_ - 1));
+        return node->data;
+    else if ( n_ > this->nodeCount )
+        return nthElement( node->right, n_ - this->nodeCount );
+    else
+        return nthElement( node->left, n_ - 1 );
 }
 
 /*!
@@ -271,10 +295,21 @@ T Tree<T>::findMedian( TreeNode *node )
  * @return => int
 */
 template <typename T>
-int Tree<T>::position( TreeNode *node )
+int Tree<T>::position( TreeNode *node, T nodeToFind )
 {
-    /*! empty */
-    return 0;
+    // Base Cases: root is null or key is present at root
+    if ( node == nullptr || node->data == nodeToFind )
+       return this->index;
+
+    // Key is greater than root's key
+    if ( node->data < nodeToFind )
+       return position(node->right, nodeToFind);
+ 
+    // Key is smaller than root's key
+    return position(node->left, nodeToFind);
+
+    //! Increase the global index
+    this->index += 1;
 }
 
 /*!
@@ -297,10 +332,17 @@ bool Tree<T>::isFull()
  * @return => bool
 */
 template <typename T>
-bool Tree<T>::isComplete()
+bool Tree<T>::isComplete( TreeNode *node_ )
 {
-    /*! empty */
-    return false;
+    //! Check if the Tree was initialized
+    if ( node_ == nullptr )
+        return true;
+
+    //! Get the height's from left and right child
+    node_->leftCount = treeHeight( node_->left );
+    node_->rightCount = treeHeight( node_->right );
+
+    return( node_->leftCount == node_->rightCount && isComplete(node_->left) && isComplete(node_->right) );
 }
 
 /*!

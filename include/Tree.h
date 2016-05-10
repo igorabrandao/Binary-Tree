@@ -14,6 +14,11 @@
     LAST UPDATE.: April 30th, 2016.
     LAST UPDATE.: May 1st, 2016.
     LAST UPDATE.: May 4th, 2016.
+    LAST UPDATE.: May 5th, 2016.
+    LAST UPDATE.: May 6th, 2016.
+    LAST UPDATE.: May 7th, 2016.
+    LAST UPDATE.: May 8th, 2016.
+    LAST UPDATE.: May 9th, 2016.
     </PRE>
 */
 
@@ -33,7 +38,7 @@ using namespace std;
 // int countNodes( TreeNode* )              --> Count the Nodes in the tree
 // TreeNode* nthElement( TreeNode*, int )   --> Return the nth element
 // T findMedian( TreeNode* )                --> Return the element in the median
-// int position( TreeNode* )                --> Return a Node's position
+// int position( T )                        --> Return a Node's position
 // bool isFull()                            --> Check if the Tree is full
 // bool isComplete()                        --> Check if the Tree is Complete
 // string toString()                        --> Return the Tree as string
@@ -62,8 +67,8 @@ class Tree
         }
     };
 
+    TreeNode * root;    //!< Tree root instance
     int index;          //!< Index to support the median function
-    int treeHeight;     //!< Tree's height
     int nodeCount;      //!< Node's total child count
 
     void print( TreeNode* ) const;
@@ -75,7 +80,6 @@ class Tree
     public:
 
         /*! Basic members */
-        TreeNode * root;    //!< Tree root instance
         Tree();             //!< Constructor
         ~Tree();            //!< Destructor
 
@@ -83,16 +87,21 @@ class Tree
         void print();
 
         /*! Custom functions */
+        int treeHeight( TreeNode* );
         int countNodes( TreeNode* );
 
-        const TreeNode* nthElement( TreeNode*, int );
+        T nthElement( TreeNode*, int );
         T findMedian( TreeNode* );
-        int position( TreeNode* );
+        int position( TreeNode*, T );
         bool isFull();
-        bool isComplete();
+        bool isComplete( TreeNode* );
         string toString();
 
         /*! Get's and set's */
+        void setRoot( TreeNode* node_ ) { this->root = node_; }
+        TreeNode* getRoot() { return this->root; }
+        T getRootData() { return this->root->data; }
+
         void setIndex( int index_ ) { this->index = index_; }
         int getIndex() { return this->index; }
 
