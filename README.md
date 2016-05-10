@@ -1,31 +1,31 @@
 # README #
 ** Visão Geral**
-O objetivo do projeto Gremlins é motivar o uso de listas encadeadas em um contexto de aplicação real. A aplicação selecionada
-é um gerenciador de memória (GM). Implementar um GM não é uma tarefa trivial porém é importante em situações na qual é necessário
-ter total controle sobre a organização de memória e melhorar o desempenho de tempo associado à requisições de memória
-pela aplicação-alvo.
+O objetivo deste projeto é implementar a estrutura de dados árvore binária, assim como suas principais funções de manipulação.
 
 ### MEMBBROS DA EQUIPE ###
 * Igor A. Brandão
-* Leandro Antonio F. Silva
+* José Carlos Emídio
 
 ### COMO COMPILAR ###
 * Use o makefile digitando o comando **'make'** pelo terminal, após ter navegado para a pasta do projeto.
 
 ### COMO EXECUTAR O PROGRAMA ###
-Para executar o Gremlins é necessário chamar o arquivo executável após compilar com o comando **'make'** pelo terminal,
+Para executar o projeto é necessário chamar o arquivo executável após compilar com o comando **'make'** pelo terminal,
 assim:\n
-* ./bin/gremlins\n
+* ./bin/binary_tree\n <'arquivo_criação_arvore'>
+
+Caso o arquivo de criação da árvore não for informado, o sistemá irá utilizar um arquivo com configurações default
 
 ### LISTA DE CLASSES ###
 As classes utilizadas pelo programa são as seguintes:
 
-**StoragePool.h** => Provê a definição geral dos métodos Allocate() e Free().
+**Tree.h** 		=> Provê a definição geral da estrutura de dados árvore binária.
+*Tree.inl* 		=> Implementa as funções definidas na classe tree.h.
+*drive.cpp* 	=> Realiza as chamadas aos métodos da classe tree.h. É a ignição do sistema.
 
-**SLPool.h** => Implementa de fatos os métodos Allocate() e Free().
+### ITENS NÃO DESENVOLVIDOS ###
+Por questões de dificuldades técnicas e de entendimento durante o desenvolvimento do projeto, não foi possível
+implementar a função toString que tem como finalidade converter a estrutura de árvore em um única arquivo de texto.
 
-**Event.h** => Manipula o timeStamp e o memoryPtr para ser usado na priority_queue.
-
-**SLPoolTester.h** => Implementa o método StoragePoolTest() para testar a eficiência dos métodos do gerenciador de memória.
-
-Além disso, também criou-se um arquivo **MempoolCommon.h** para que as definições dos operadores "new" e "delete" sejam sobrescritas.
+Além disso, a função que realiza o parse do arquivo de comandos ficou inacabada, apenas realizando a leitura do arquivo
+de comandos em si, mas não direcionando as funções previamente implementadas na classe tree.h.

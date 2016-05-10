@@ -103,7 +103,7 @@ class Tree
         string toString();
 
         void createTreeFile( string );
-        void executeCommandFile( string );
+        void parseCommandFile( string );
 
         /*! Get's and set's */
         void setRoot( TreeNode* node_ ) { this->root = node_; }

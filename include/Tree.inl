@@ -395,8 +395,19 @@ void Tree<T>::createTreeFile( string filename_ )
  * @return => void
 */
 template <typename T>
-void Tree<T>::executeCommandFile( string filename_)
+void Tree<T>::parseCommandFile( string filename_)
 {
-    /*! empty */
-    return "";
+    ifstream openfile(filename_);
+    string command;
+    int parameter;
+
+    if( !openfile )
+        cerr << "<<< Cant open the file " << endl;
+
+    while ( (openfile >> command >> parameter) || (openfile >> command) )
+    {
+        cout << command << " - " << parameter << endl;
+    }
+
+    openfile.close();
 }

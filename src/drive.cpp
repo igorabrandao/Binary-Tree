@@ -32,6 +32,7 @@ int main( int argc, char const *argv[] )
      {
         //! Tree instance
         Tree<int> tree;
+        string input = "";
 
         //! Check the value of argc. If not enough parameters have been passed, inform user and exit.
         if ( argc < 2 )
@@ -62,7 +63,25 @@ int main( int argc, char const *argv[] )
             }
         }
 
-        for ( int i = 0; i < 10; i++ )
+        do
+        {
+            /*! Check if all arguments was passed */
+            cout << "<<< Inform the command filename (q to quit): ";
+            cin >> input;
+
+            std::stringstream filename;
+            filename << "assets/data/" << input;
+
+            //! The command file needs to exist
+            if ( input.compare("") != 0 && fileExist(filename.str()) == true )
+            {
+                //! Call the file command parsing
+                tree.parseCommandFile(filename.str());
+            }
+        }
+        while ( input.compare("q") != 0 );
+
+        for ( int i = 0; i < 5; i++ )
         {
             std::cout << std::endl << "Elemento na posicao " << i << ": " << tree.nthElement(tree.getRoot(), i) << std::endl;
         }

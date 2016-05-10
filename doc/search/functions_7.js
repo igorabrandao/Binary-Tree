@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['main',['main',['../de/de5/drive_8cpp.html#abf9e6b7e6f15df4b525a2e7705ba3089',1,'drive.cpp']]],
-  ['menu',['menu',['../de/de5/drive_8cpp.html#a2a0e843767aeea4f433a28b9c54f573a',1,'drive.cpp']]]
+  ['setheight',['setHeight',['../d7/d4d/classTree.html#a75854e22a9693d6e783613ce6e21fbcb',1,'Tree']]],
+  ['setindex',['setIndex',['../d7/d4d/classTree.html#af896258b075415c50b7aa8be6a36546b',1,'Tree']]],
+  ['setnodecount',['setNodeCount',['../d7/d4d/classTree.html#a626943976311535efe2560933b04c8b0',1,'Tree']]],
+  ['setroot',['setRoot',['../d7/d4d/classTree.html#aed322df8a7023bfbf1b7072a35f67bba',1,'Tree']]]
 ];
