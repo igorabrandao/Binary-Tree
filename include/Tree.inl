@@ -295,21 +295,18 @@ T Tree<T>::findMedian( TreeNode *node )
  * @return => int
 */
 template <typename T>
-int Tree<T>::position( TreeNode *node, T nodeToFind )
+int Tree<T>::position( TreeNode *node, T nodeToFind, int index_ )
 {
     // Base Cases: root is null or key is present at root
     if ( node == nullptr || node->data == nodeToFind )
-       return this->index;
+       return index_;
 
     // Key is greater than root's key
     if ( node->data < nodeToFind )
-       return position(node->right, nodeToFind);
+       return position(node->right, nodeToFind, (index_ + 1));
  
     // Key is smaller than root's key
-    return position(node->left, nodeToFind);
-
-    //! Increase the global index
-    this->index += 1;
+    return position(node->left, nodeToFind, (index_ + 1));
 }
 
 /*!
@@ -321,8 +318,12 @@ int Tree<T>::position( TreeNode *node, T nodeToFind )
 template <typename T>
 bool Tree<T>::isFull()
 {
-    /*! empty */
-    return false;
+    if ( this->root == nullptr )
+        return 0;
+    else if ( this->nodeCount == ( pow( 2, treeHeight(this->root)) - 1) )
+        return true;
+    else
+        return false;
 }
 
 /*!
@@ -353,6 +354,48 @@ bool Tree<T>::isComplete( TreeNode *node_ )
 */
 template <typename T>
 string Tree<T>::toString()
+{
+    /*! empty */
+    return "";
+}
+
+/*!
+ * createTreeFile function
+ * Generate a new tree from a file
+ *
+ * @return => void
+*/
+template <typename T>
+void Tree<T>::createTreeFile( string filename_ )
+{
+    std::string line;
+    std::ifstream openfile(filename_);
+
+    //! Read an entire line from file
+    while ( std::getline(openfile, line) )  // this does the checking!
+    {
+        std::istringstream iss(line);
+        int node_value;
+
+        std::cout << std::endl << "<<< Generating the tree... " << std::endl;
+
+        //! Read each element
+        while ( iss >> node_value )
+        {
+            // Generate the tree
+            this->insert(node_value);
+        }
+    }
+}
+
+/*!
+ * executeCommandFile function
+ * Execute a command batch from a file
+ *
+ * @return => void
+*/
+template <typename T>
+void Tree<T>::executeCommandFile( string filename_)
 {
     /*! empty */
     return "";

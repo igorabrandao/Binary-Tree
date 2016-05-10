@@ -27,8 +27,13 @@
 
 #include <iostream>
 #include <string>
+#include <cmath>
 #include <stdexcept>
 #include <cassert>
+
+#include <sstream>
+#include <fstream>
+#include <string>
 
 using namespace std;
 
@@ -92,10 +97,13 @@ class Tree
 
         T nthElement( TreeNode*, int );
         T findMedian( TreeNode* );
-        int position( TreeNode*, T );
+        int position( TreeNode*, T, int );
         bool isFull();
         bool isComplete( TreeNode* );
         string toString();
+
+        void createTreeFile( string );
+        void executeCommandFile( string );
 
         /*! Get's and set's */
         void setRoot( TreeNode* node_ ) { this->root = node_; }

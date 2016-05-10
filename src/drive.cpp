@@ -4,9 +4,24 @@
  *  Starts the program.
 */
 #include <iostream>
+#include <sstream>
+#include <string>
 #include "Tree.h"
 
 using namespace std;
+
+bool fileExist( const std::string& name )
+{
+    if ( FILE *file = fopen(name.c_str(), "r") )
+    {
+        fclose(file);
+        return true;
+    } 
+    else 
+    {
+        return false;
+    }   
+}
 
 /********************************************//**
 * Main
@@ -15,22 +30,37 @@ int main( int argc, char const *argv[] )
 {
      try
      {
+        //! Tree instance
         Tree<int> tree;
-        tree.insert(17);
-        tree.insert(12);
-        tree.insert(6);
-        tree.insert(10);
-        tree.insert(14);
-        tree.insert(3);
-        tree.insert(15);
-        tree.insert(17);
-        tree.insert(18);
-        tree.insert(7);
-        tree.insert(20);
-        tree.insert(12);
-        tree.insert(1);
-        tree.insert(15);
-        tree.print();
+
+        //! Check the value of argc. If not enough parameters have been passed, inform user and exit.
+        if ( argc < 2 )
+        { 
+            //! Generate a tree from default file
+            std::cout << std::endl << "<<< Using default input file..." << std::endl;
+            tree.createTreeFile("assets/data/input.txt");
+            tree.print();
+        }
+        //! Correct parameters
+        else 
+        {
+            //! Generate a tree from default file
+            std::stringstream input;
+            input << "assets/data/" << argv[1];
+
+            std::cout << "<< Using " << argv[1] << " input file..." << std::endl;
+
+            if ( fileExist(input.str()) == true )
+            {
+                tree.createTreeFile(input.str());
+                tree.print();
+            }
+            else
+            {
+                std::cout << std::endl << "<<< File does not exist" << std::endl << std::endl;
+                exit(0);
+            }
+        }
 
         for ( int i = 0; i < 10; i++ )
         {
@@ -42,18 +72,20 @@ int main( int argc, char const *argv[] )
         std::cout << std::endl << "Total elementos: " << tree.getNodeCount() << std::endl;
         std::cout << std::endl << "Altura: " << tree.treeHeight(tree.getRoot()) << std::endl;
 
-        std::cout << std::endl << "Posicao node 18: " << tree.position(tree.getRoot(), 18) << std::endl;
-        std::cout << std::endl << "Posicao node 10: " << tree.position(tree.getRoot(), 10) << std::endl;
-        std::cout << std::endl << "Posicao node 7: " << tree.position(tree.getRoot(), 7) << std::endl;
-        std::cout << std::endl << "Posicao node 3: " << tree.position(tree.getRoot(), 3) << std::endl;
-        std::cout << std::endl << "Posicao node 17: " << tree.position(tree.getRoot(), 17) << std::endl;
-        std::cout << std::endl << "Posicao node 12: " << tree.position(tree.getRoot(), 12) << std::endl;
-        std::cout << std::endl << "Posicao node 6: " << tree.position(tree.getRoot(), 6) << std::endl;
-        std::cout << std::endl << "Posicao node 20: " << tree.position(tree.getRoot(), 20) << std::endl;
-        std::cout << std::endl << "Posicao node 15: " << tree.position(tree.getRoot(), 15) << std::endl;
-        std::cout << std::endl << "Posicao node 100: " << tree.position(tree.getRoot(), 100) << std::endl;
+        std::cout << std::endl << "Posicao node 18: " << tree.position(tree.getRoot(), 18, 0) << std::endl;
+        std::cout << std::endl << "Posicao node 10: " << tree.position(tree.getRoot(), 10, 0) << std::endl;
+        std::cout << std::endl << "Posicao node 7: " << tree.position(tree.getRoot(), 7, 0) << std::endl;
+        std::cout << std::endl << "Posicao node 3: " << tree.position(tree.getRoot(), 3, 0) << std::endl;
+        std::cout << std::endl << "Posicao node 17: " << tree.position(tree.getRoot(), 17, 0) << std::endl;
+        std::cout << std::endl << "Posicao node 12: " << tree.position(tree.getRoot(), 12, 0) << std::endl;
+        std::cout << std::endl << "Posicao node 6: " << tree.position(tree.getRoot(), 6, 0) << std::endl;
+        std::cout << std::endl << "Posicao node 20: " << tree.position(tree.getRoot(), 20, 0) << std::endl;
+        std::cout << std::endl << "Posicao node 15: " << tree.position(tree.getRoot(), 15, 0) << std::endl;
+        std::cout << std::endl << "Posicao node 100: " << tree.position(tree.getRoot(), 100, 0) << std::endl;
 
         std::cout << std::endl << "Eh completa: " << tree.isComplete(tree.getRoot()) << std::endl;
+        std::cout << std::endl << "Eh cheia: " << tree.isFull() << std::endl;
+
     }
     catch ( std::exception const &e )
     { 
