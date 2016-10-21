@@ -4,7 +4,6 @@ O objetivo deste projeto é implementar a estrutura de dados árvore binária, a
 
 ### MEMBBROS DA EQUIPE ###
 * Igor A. Brandão
-* José Carlos Emídio
 
 ### COMO COMPILAR ###
 * Use o makefile digitando o comando **'make'** pelo terminal, após ter navegado para a pasta do projeto.
