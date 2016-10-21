@@ -2,7 +2,7 @@
 ** Visão Geral**
 O objetivo deste projeto é implementar a estrutura de dados árvore binária, assim como suas principais funções de manipulação.
 
-### MEMBBROS DA EQUIPE ###
+### MEMBROS DA EQUIPE ###
 * Igor A. Brandão
 
 ### COMO COMPILAR ###
